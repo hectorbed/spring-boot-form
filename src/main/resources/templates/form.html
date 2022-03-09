@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+</head>
+<body>
+	<h2 th:text="${title}"></h2>
+	<form th:action="@{/form}" th:object="${user}" method="post">
+		<div>
+			<label for="identifier">Identifier: </label>
+			<div>
+				<input type="text" id="identifier" th:field="*{identifier}">
+			</div>
+			<div th:if="${#fields.hasErrors('identifier')}" th:errors="*{identifier}"></div>
+		</div>
+		<div>
+			<label for="name">Name: </label>
+			<div>
+				<input type="text" id="name" th:field="*{name}">
+			</div>
+			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+		</div>
+		<div>
+			<label for="lastname">Lastname: </label>
+			<div>
+				<input type="text" id="lastname" th:field="*{lastname}">
+			</div>
+			<div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+		</div>
+		<div>
+			<label for="username">Username: </label>
+			<div>
+				<input type="text" id="username" th:field="*{username}">
+			</div>
+			<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+		</div>
+		<div>
+			<label for="password">Password: </label>
+			<div>
+				<input type="password" id="password" th:field="*{password}">
+			</div>
+			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+		</div>
+		<div>
+			<label for="email">Email: </label>
+			<div>
+				<input type="text" id="email" th:field="*{email}">
+			</div>
+			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+		</div>
+		<div>
+			<label for="account">Account: </label>
+			<div>
+				<input type="number" id="account" th:field="*{account}">
+			</div>
+			<div th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
+		</div>
+		<div>
+			<label for="birthday">Birthday: </label>
+			<div>
+				<input type="date" id="birthday" th:field="*{birthday}" placeholder="YYYY-MM-DD">
+			</div>
+			<div th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+		</div>
+		<div>
+			<label for="country.id">Country: </label>
+			<div>
+				<select id="country" th:field="*{country}">
+					<option value="">-- Choose --</option>
+					<option th:each="country: ${countriesList}" th:text="${country.name}" th:value="${country.id}"></option>
+				</select>
+			</div>
+			<div th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
+		</div>
+		<div>
+			<label for="roles">Roles: </label>
+			<div th:each="role: ${rolesList}">
+				<input type="checkbox" th:field="*{roles}" th:value="${role.id}">
+				<label th:for="${#ids.prev('roles')}" th:text="${role.name}"></label>
+			</div>
+			<div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+		</div>
+		<div>
+			<label for="enable">Enable: </label>
+			<div>
+				<input type="checkbox" th:field="*{enable}" id="enable">
+			</div>			
+		</div>
+		<div>
+			<input type="submit" value="Submit">
+		</div>
+	</form>
+</body>
+</html>
