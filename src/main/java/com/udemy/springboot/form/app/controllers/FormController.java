@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -66,6 +67,11 @@ public class FormController {
 		binder.registerCustomEditor(Role.class, roleEditor);
 	}
 	
+	@ModelAttribute("gender")
+	public List<String> gender(){
+		return Arrays.asList("Man","Woman");
+	}
+	
 	@ModelAttribute("countriesList")
 	public List<Country> countriesList(){
 		return countryService.list();
@@ -99,7 +105,7 @@ public class FormController {
 	@GetMapping("/form")
 	public String form(Model model) {
 		User user = new User();
-		user.setIdentifier("12344321");
+		user.setIdentifier("12.234.232-K");
 		user.setName("Name Test");
 		user.setLastname("Last Name test");
 		user.setEnable(true);
@@ -130,9 +136,9 @@ public class FormController {
 	// @Valid : This annotation is used to validate fields in the form. Validations are in the POJO
 	// BindingResult: This handle validation from the POJO and Should be just after the object which is validated.
 	@PostMapping("/form")
-	public String processForm(@Valid User user, BindingResult result, Model model, SessionStatus status) {
+	public String processForm(@Valid User user, BindingResult result, Model model) {
 		
-		model.addAttribute("title", "Form result");
+		
 		
 		if(result.hasErrors()) {
 			/*
@@ -142,14 +148,27 @@ public class FormController {
 			});
 			model.addAttribute("error", errors);
 			*/
-			
+			model.addAttribute("title", "Form result");
 			return "form";
 		}
 		
-		model.addAttribute("user", user);
+		return "redirect:/show";
+	}
+	
+	/*
+	 * @SessionAttribute(name="user", required = false) => This is used to take an attribute from the session and it's
+	 * required here because this method is used from a redirect in previous method, so, we have to take the user object from 
+	 * the session.
+	 */
+	@GetMapping("/show")
+	public String show(@SessionAttribute(name="user", required = false) User user, Model model, SessionStatus status) {
+		if(user == null) {
+			return "redirect:/form";
+		}
+		model.addAttribute("title", "Form result");
 		status.setComplete(); // With this, we indicate that attribute of the session can be deleted.
-		
 		return "result";
 	}
+	
 
 }

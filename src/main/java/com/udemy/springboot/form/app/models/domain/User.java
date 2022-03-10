@@ -55,6 +55,9 @@ public class User {
 	
 	private Boolean enable;
 	
+	@NotNull
+	private String gender;
+	
 	
 	public Boolean getEnable() {
 		return enable;
@@ -122,5 +125,12 @@ public class User {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
 
 }
